@@ -6,12 +6,15 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Role.delete_all
+User.delete_all
+
 Role.find_or_create_by(id: 1, name: 'admin')
 Role.find_or_create_by(id: 2, name: 'moderator')
 Role.find_or_create_by(id: 3, name: 'member')
 Role.find_or_create_by(id: 4, name: 'visitor')
 
-user = User.create(
+user = User.new(
   username: 'test',
   password: 'password',
   password_confirmation: 'password'

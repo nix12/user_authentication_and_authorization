@@ -46,6 +46,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'simplecov', :require => false, :group => :test
   gem 'factory_bot_rails'
+  gem 'rspec-json_expectations'
 end
 
 group :development do

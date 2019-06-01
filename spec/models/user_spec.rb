@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { create(:regular_user) }
+  let(:user) { create(:user_with_roles) }
 
-  describe 'validations' do
+  before(:all) { create(:role, :member) }
+
+  describe 'validation' do
     it 'should be valid' do
       expect(user).to be_valid
     end
@@ -52,9 +54,22 @@ RSpec.describe User, type: :model do
         expect(user.password).to match(user.password_confirmation)
       end
     end
+
+    context 'roles' do
+      it 'should have a valid role' do
+        expect(user.roles).to be_present
+      end
+
+      it 'should have the member role by default' do
+        pp user.roles
+        user.roles.any? do |role|
+          expect(role).to have_attributes(name: 'member')
+        end
+      end
+    end
   end
 
-  describe 'invalidations' do
+  describe 'invalidation' do
     context 'username' do
       it 'should not be present' do
         user.username = nil
@@ -110,7 +125,6 @@ RSpec.describe User, type: :model do
 
         expect(user).to be_invalid
       end
-
     end
   end
 end

@@ -2,7 +2,6 @@
 
 class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   skip_before_action :doorkeeper_authorize!
-  after_action :assign_default_role, only: [:create]
 
   def create
     build_resource(sign_up_params)
@@ -12,7 +11,7 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
         # set_flash_message! :notice, :signed_up
         # To avoid login comment out sign_up method
         # sign_up(resource_name, resource)
-        render json: resource # , location: after_sign_up_path_for(resource)
+        render json: resource, status: 201 # , location: after_sign_up_path_for(resource)
       else
         # set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
         expire_data_after_sign_in!
@@ -28,11 +27,6 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   def authenticate_scope!
     # send(:"authenticate_#{resource_name}!", force: true)
     self.resource = send(:"current_#{resource_name}")
-  end
-
-
-  def assign_default_role
-    resource.add_role(:member) if resource.roles.blank?
   end
 
   # before_action :configure_sign_up_params, only: [:create]

@@ -1,17 +1,53 @@
 FactoryBot.define do
-  factory :admin, class: Role do
-    name { 'admin' }
-  end
+  factory :role, class: Role do
+    name { 'user roles' }
 
-  factory :moderator, class: Role do
-    name { 'moderator' }
-  end
+    trait :admin do
+      name { 'admin' }
 
-  factory :member, class: Role do
-    name { 'member' }
-  end
+      transient do
+        roles_count { 1 }
+      end
 
-  factory :visitor, class: Role do
-    name { 'visitor' }
+      after(:create) do |role, evaluator|
+        create_list(:user, evaluator.roles_count, roles: [role])
+      end
+    end
+
+    trait :moderator do
+      name { 'moderator' }
+
+      transient do
+        roles_count { 1 }
+      end
+
+      after(:create) do |role, evaluator|
+        create_list(:user, evaluator.roles_count, roles: [role])
+      end
+    end
+
+    trait :member do
+      name { 'member' }
+
+      transient do
+        roles_count { 1 }
+      end
+
+      after(:create) do |role, evaluator|
+        create_list(:user, evaluator.roles_count, roles: [role])
+      end
+    end
+
+    trait :visitor do
+      name { 'visitor' }
+
+      transient do
+        roles_count { 1 }
+      end
+
+      after(:create) do |role, evaluator|
+        create_list(:user, evaluator.roles_count, roles: [role])
+      end
+    end
   end
 end

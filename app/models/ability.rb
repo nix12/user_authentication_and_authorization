@@ -10,19 +10,24 @@ class Ability
   end
 
   def admin_abilities(user)
-    can :manage, :all
+    can :read, :all
+    can :manage, :Jet
+    can :manage, :Post
+    can :manage, :Comment
   end
 
   def moderator_abilities(user)
     can :read, :all
-    can :manage, :jet, { mod_id: user.id }
+    can :manage, :Jet
+    can [:read, :destroy], :Post
+    can [:read, :destroy], :Comment
   end
 
   def member_abilities(user)
     can :read, :all
-    can :manage, :post, { author_id: user.id }
-    can :manage, :comment, { author_id: user.id }
-    can [:read, :update], User, { id: user.id }
+    can :manage, :Post
+    can :manage, :Comment
+    can :manage, User, { id: user.id }
   end
 
   def visitor_abilities(user)
