@@ -19,7 +19,7 @@ RSpec.describe Role, type: :model do
     let(:ability) { Ability.new(user) }
 
     before(:each) { user.add_role(:admin) }
-    
+
     it 'should have name "admin"' do
       expect(admin.name).to eq('admin')
     end

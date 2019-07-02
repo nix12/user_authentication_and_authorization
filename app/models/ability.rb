@@ -32,6 +32,7 @@ class Ability
 
   def visitor_abilities(user)
     can :read, :all
+    can :create, User
   end
 
   def to_list

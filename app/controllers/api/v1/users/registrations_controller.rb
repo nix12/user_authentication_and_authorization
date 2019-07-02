@@ -48,9 +48,18 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    user = User.friendly.find(params[:user][:username])
+
+    if user.valid_password?(params[:user][:current_password]) &&
+       user.update_attributes(password_params)
+
+      render json: user, status: :ok
+    else
+      render json: { error: 'Password update failed.' },
+             status: :internal_server_error
+    end
+  end
 
   # DELETE /resource
   # def destroy
@@ -87,4 +96,10 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+private
+
+  def password_params
+    params.require(:user).permit(:password, :password_confirmation)
+  end
 end
