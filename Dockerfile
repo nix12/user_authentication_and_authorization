@@ -4,7 +4,11 @@ RUN mkdir /user_authentication_and_authorization
 
 WORKDIR ./user_authentication_and_authorization
 
-COPY . ./
+COPY ./ ./
+
+COPY Gemfile /user_authentication_and_authorization/Gemfile
+
+COPY Gemfile.lock /user_authentication_and_authorization/Gemfile.lock
 
 RUN apt-get update -qq && apt-get install -y build-essential
 
