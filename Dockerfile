@@ -2,7 +2,7 @@ FROM ruby:2.6.3
 
 RUN mkdir /user_authentication_and_authorization
 
-WORKDIR ./user_authentication_and_authorization
+WORKDIR /user_authentication_and_authorization
 
 COPY ./user_authentication_and_authorization /user_authentication_and_authorization
 
