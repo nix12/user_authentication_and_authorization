@@ -4,7 +4,7 @@ RUN mkdir /user_authentication_and_authorization
 
 WORKDIR /user_authentication_and_authorization
 
-COPY ./user_authentication_and_authorization /user_authentication_and_authorization
+COPY ./ /user_authentication_and_authorization
 
 RUN apt-get update -qq && apt-get install -y build-essential
 
