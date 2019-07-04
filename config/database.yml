@@ -1,11 +1,19 @@
-default: &default 
-  adapter: postgresql 
-  encoding: unicode 
-  pool: 5 
-  timeout: 5000 
-  username: postgres 
-  host: postgres
-  port: 5432
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: db
+  username: postgres
+  password:
+  pool: 5
+
+development:
+  <<: *default
+  database: user_authentication_and_authorization_development
+
+
+test:
+  <<: *default
+  database: user_authentication_and_authorization_test
 
 # # PostgreSQL. Versions 9.1 and up are supported.
 # #
