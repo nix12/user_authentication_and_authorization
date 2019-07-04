@@ -14,6 +14,8 @@ RUN gem install bundler && bundle install
 
 COPY . /user_authentication_and_authorization
 
+ENV RAILS_MASTER_KEY $RAILS_MASTER_KEY
+
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
