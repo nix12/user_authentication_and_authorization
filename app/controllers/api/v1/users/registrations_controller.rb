@@ -54,7 +54,7 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
     if user.valid_password?(params[:user][:current_password]) &&
        user.update_attributes(password_params)
 
-      render json: user, status: :ok
+      render json: user, status: :no_content
     else
       render json: { error: 'Password update failed.' },
              status: :internal_server_error
