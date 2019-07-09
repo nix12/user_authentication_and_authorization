@@ -87,6 +87,7 @@ RSpec.describe 'Users', type: :request do
       {
         access_token: token.token,
         user: {
+					username: user.username
           current_password: user.password,
           password: 'newpassword',
           password_confirmation: 'newpassword'
