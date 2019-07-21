@@ -10,11 +10,9 @@ development:
   <<: *default
   database: user_authentication_and_authorization_development
 
-
 test:
   <<: *default
   database: user_authentication_and_authorization_test
-
 # # PostgreSQL. Versions 9.1 and up are supported.
 # #
 # # Install the pg driver:

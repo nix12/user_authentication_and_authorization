@@ -1,5 +1,3 @@
-require_relative '../../lib/custom_token_response'
-require_relative '../../lib/custom_token_error_response'
 # frozen_string_literal: true
 
 Doorkeeper.configure do
@@ -15,9 +13,9 @@ Doorkeeper.configure do
   end
 
   # In this flow, a token is requested in exchange for the resource owner credentials (username and password)
-  resource_owner_from_credentials do |routes|
+  resource_owner_from_credentials do |_routes|
     user = User.find_for_database_authentication(username: params[:username])
-    if user && user.valid_for_authentication? { user.valid_password?(params[:password]) }
+    if user&.valid_for_authentication? { user.valid_password?(params[:password]) }
       user
     end
   end
@@ -33,7 +31,7 @@ Doorkeeper.configure do
   #   http://tools.ietf.org/html/rfc6819#section-4.4.3
   #
   # grant_flows %w(authorization_code client_credentials)
-  grant_flows %w(password)
+  grant_flows %w[password]
 
   # Under some circumstances you might want to have applications auto-approved,
   # so that the user skips the authorization step.
@@ -52,16 +50,13 @@ Doorkeeper.configure do
   api_only
 end
 
-Doorkeeper::OAuth::TokenResponse.send :prepend, CustomTokenResponse
-Doorkeeper::OAuth::ErrorResponse.send :prepend, CustomTokenErrorResponse
-
 Doorkeeper::JWT.configure do
   # Set the payload for the JWT token. This should contain unique information
   # about the user. Defaults to a randomly generated token in a hash:
   #     { token: "RANDOM-TOKEN" }
   token_payload do |opts|
     user = User.find(opts[:resource_owner_id])
-    
+
     {
       iss: Rails.application.class.parent.to_s.underscore,
       iat: Time.current.utc.to_i,
@@ -69,10 +64,9 @@ Doorkeeper::JWT.configure do
       # @see JWT reserved claims - https://tools.ietf.org/html/draft-jones-json-web-token-07#page-7
       jti: SecureRandom.uuid,
 
-      user: {
-        id: user.id,
-        username: user.username
-      }
+      id: user.id,
+      username: user.username,
+      rules: Ability.new(user).to_list
     }
   end
 
