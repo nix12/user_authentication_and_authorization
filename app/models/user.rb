@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
-  after_create :assign_default_role
+  before_create :assign_default_role
 
   has_and_belongs_to_many :roles
 
@@ -11,7 +13,7 @@ class User < ApplicationRecord
   devise :registerable, :recoverable, :rememberable, :validatable
   devise :database_authenticatable, authentication_keys: [:username]
 
-  VALID_USERNAME_REGEX = /[\w\s\|-]+/i
+  VALID_USERNAME_REGEX = /[\w\s\|-]+/i.freeze
 
   validates :username, uniqueness: { case_sensitive: false },
                        presence: true, length: { minimum: 3, maximum: 10 },
@@ -27,20 +29,16 @@ class User < ApplicationRecord
   end
 
   # role methods are used with CanCanCan
-  [:admin, :moderator, :member, :visitor].each do |role|
+  %i[admin moderator member visitor].each do |role|
     define_method("#{role}?") { roles.exists?(name: role) }
   end
 
   def add_role(role)
-    unless send("#{role}?")
-      roles << Role.find_by(name: role)
-    end
+    roles << Role.find_by(name: role) unless send("#{role}?")
   end
 
   def remove_role(role)
-    if send("#{role}?")
-      roles.delete(Role.find_by(name: role))
-    end
+    roles.delete(Role.find_by(name: role)) if send("#{role}?")
   end
 
   def assign_default_role
