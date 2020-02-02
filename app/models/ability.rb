@@ -9,14 +9,16 @@ class Ability
     end
   end
 
-  def admin_abilities(_user)
+  def admin_abilities(user)
     can :manage, :Jet
     can :manage, :Post
     can :manage, :Comment
+    can :manage, User, id: user.id
   end
 
-  def moderator_abilities(_user)
+  def moderator_abilities(user)
     can :manage, :Jet
+    can :manage, User, id: user.id
     can %i[read destroy], :Post
     can %i[read destroy], :Comment
   end
