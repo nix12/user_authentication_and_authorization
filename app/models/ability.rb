@@ -12,6 +12,7 @@ class Ability
   def admin_abilities(user)
     can :manage, :Jet
     can :manage, :Post
+    can :manage, :Link
     can :manage, :Comment
     can :manage, User, id: user.id
   end
@@ -25,9 +26,10 @@ class Ability
 
   def member_abilities(user)
     can :read, :all
-    can :manage, :Post
-    can :manage, :Comment
-    can :manage, User, id: user.id
+    can :manage, :Post, voter_id: user.username
+    can :manage, :Link, voter_id: user.username
+    can :manage, :Comment, voter_id: user.username
+    can :manage, User, id: user.id, username: user.username
   end
 
   def to_list

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Doorkeeper.configure do
+  api_only
+  access_token_generator '::Doorkeeper::JWT'
+
   # Change the ORM that doorkeeper will use (needs plugins)
   orm :active_record
 
@@ -31,7 +34,7 @@ Doorkeeper.configure do
   #   http://tools.ietf.org/html/rfc6819#section-4.4.3
   #
   # grant_flows %w(authorization_code client_credentials)
-  grant_flows %w[password]
+  grant_flows %w[password client_credentials]
 
   # Under some circumstances you might want to have applications auto-approved,
   # so that the user skips the authorization step.
@@ -45,9 +48,6 @@ Doorkeeper.configure do
 
   # WWW-Authenticate Realm (default "Doorkeeper").
   # realm "Doorkeeper"
-
-  access_token_generator '::Doorkeeper::JWT'
-  api_only
 end
 
 Doorkeeper::JWT.configure do
@@ -64,9 +64,12 @@ Doorkeeper::JWT.configure do
       # @see JWT reserved claims - https://tools.ietf.org/html/draft-jones-json-web-token-07#page-7
       jti: SecureRandom.uuid,
 
-      id: user.id,
-      username: user.username,
-      rules: Ability.new(user).to_list
+      user: {
+        id: user.id,
+        username: user.username,
+        roles: user.roles.pluck(:name),
+        rules: Ability.new(user).to_list
+      }
     }
   end
 

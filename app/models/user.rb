@@ -16,7 +16,7 @@ class User < ApplicationRecord
   VALID_USERNAME_REGEX = /[\w\s\|-]+/i.freeze
 
   validates :username, uniqueness: { case_sensitive: false },
-                       presence: true, length: { minimum: 3, maximum: 10 },
+                       presence: true, length: { minimum: 3, maximum: 15 },
                        format: { with: VALID_USERNAME_REGEX }
 
   def email_required?
@@ -29,7 +29,7 @@ class User < ApplicationRecord
   end
 
   # role methods are used with CanCanCan
-  %i[admin moderator member visitor].each do |role|
+  %i[admin moderator member].each do |role|
     define_method("#{role}?") { roles.exists?(name: role) }
   end
 

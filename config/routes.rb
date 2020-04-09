@@ -3,7 +3,7 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
-  # Use for login and autorize all resource
+  # Use for login and authorize all resource
   use_doorkeeper
 
   scope module: :api, defaults: { format: :json }, path: 'api' do
