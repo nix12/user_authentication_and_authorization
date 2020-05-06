@@ -26,7 +26,7 @@ RSpec.describe Role, type: :model do
 
     context 'abilities' do
       it 'should be able to read all jets, posts, comments, users' do
-        topics = [:Jet, :Post, :Comment, User.new]
+        topics = [:Jet, :Text, :Comment, User.new]
 
         topics.each do |topic|
           expect(ability).to be_able_to(:read, topic)
@@ -38,7 +38,7 @@ RSpec.describe Role, type: :model do
       end
 
       it 'should manage posts' do
-        expect(ability).to be_able_to(:manage, :Post)
+        expect(ability).to be_able_to(:manage, :Text)
       end
 
       it 'should manage comments' do
@@ -59,7 +59,7 @@ RSpec.describe Role, type: :model do
 
     context 'abilities' do
       it 'should be able to read all jets, posts, comments, users' do
-        topics = [:Jet, :Post, :Comment, User.new]
+        topics = [:Jet, :Text, :Comment, User.new]
 
         topics.each do |topic|
           expect(ability).to be_able_to(:read, topic)
@@ -67,7 +67,7 @@ RSpec.describe Role, type: :model do
       end
 
       it 'should manage posts for jet' do
-        expect(ability).to be_able_to(:manage, :Post)
+        expect(ability).to be_able_to(:manage, :Text)
       end
 
       it 'should manage comments for jet' do
@@ -88,7 +88,7 @@ RSpec.describe Role, type: :model do
 
     context 'abilities' do
       it 'should be able to read all jets, posts, comments, users' do
-        topics = [:Jet, :Post, :Comment, user]
+        topics = [:Jet, :Text, :Comment, user]
 
         topics.each do |topic|
           expect(ability).to be_able_to(:read, topic)
@@ -109,7 +109,7 @@ RSpec.describe Role, type: :model do
 
     context 'abilities' do
       it 'should be able to read all jets, posts, comments, users' do
-        topics = [:Jet, :Post, :Comment, User.new]
+        topics = [:Jet, :Text, :Comment, User.new]
 
         topics.each do |topic|
           expect(ability).to be_able_to(:read, topic)

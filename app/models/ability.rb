@@ -11,7 +11,7 @@ class Ability
 
   def admin_abilities(user)
     can :manage, :Jet
-    can :manage, :Post
+    can :manage, :Text
     can :manage, :Link
     can :manage, :Comment
     can :manage, User, id: user.id
@@ -20,13 +20,14 @@ class Ability
   def moderator_abilities(user)
     can :manage, :Jet
     can :manage, User, id: user.id
-    can %i[read destroy], :Post
+    can %i[read destroy], :Text
+    can %i[read destroy], :Text
     can %i[read destroy], :Comment
   end
 
   def member_abilities(user)
     can :read, :all
-    can :manage, :Post, voter_id: user.username
+    can :manage, :Text, voter_id: user.username
     can :manage, :Link, voter_id: user.username
     can :manage, :Comment, voter_id: user.username
     can :manage, User, id: user.id, username: user.username

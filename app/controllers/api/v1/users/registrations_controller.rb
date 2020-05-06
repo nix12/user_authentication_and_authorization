@@ -2,6 +2,7 @@
 
 class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   skip_before_action :doorkeeper_authorize!
+  before_action :block_reserved_usernames
 
   def create
     build_resource(sign_up_params)
@@ -56,7 +57,7 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
 
       render json: user, status: :no_content
     else
-      render json: { error: 'Password update failed.' },
+      render json: { errors: 'Password update failed.' },
              status: :internal_server_error
     end
   end
@@ -101,5 +102,14 @@ private
 
   def password_params
     params.require(:user).permit(:password, :password_confirmation)
+  end
+
+  def block_reserved_usernames
+    if params[:user][:username] == '[deleted]' || 
+       params[:user][:username] == '[removed]' ||
+       params[:user][:username] == 'deleted'   ||
+       params[:user][:username] == 'removed'
+      render json: { errors: { username: ['not allowed'] } }, status: :unprocessable_entity
+    end
   end
 end

@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   before_create :assign_default_role
+  before_save { username.downcase! }
 
   has_and_belongs_to_many :roles
 
