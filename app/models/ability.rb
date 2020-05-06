@@ -21,7 +21,7 @@ class Ability
     can :manage, :Jet
     can :manage, User, id: user.id
     can %i[read destroy], :Text
-    can %i[read destroy], :Text
+    can %i[read destroy], :Link
     can %i[read destroy], :Comment
   end
 
